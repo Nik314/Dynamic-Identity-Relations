@@ -1,0 +1,11 @@
+,Log,Runtime,Sync,Imp (Ordered),Imp (Concurrent)
+0,01_ocel_standard_container_logistics,34.13293385505676,2,0,3
+1,02_ocel_standard_order_management,34.628573179244995,1,0,1
+2,03_ocel_standard_p2p,17.93341040611267,2,0,4
+3,04_ocel_lrms_o2c,25.813201665878296,4,0,2
+4,05_ocel_lrms_p2p,10.031145095825195,2,0,2
+5,06_ocel_lrms_hr,6.876932144165039,4,0,1
+6,07_ocel_lrms_hospital,13.903132438659668,5,0,0
+7,08_ocel_standard_hinge,60.120121240615845,8,3,3
+8,09_ocel_legacy_github_pm4py,1.0567996501922607,0,1,0
+9,10_ocel_legacy_recruiting,11.030210018157959,0,0,3

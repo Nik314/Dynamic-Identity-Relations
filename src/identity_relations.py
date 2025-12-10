@@ -1,6 +1,8 @@
 from src.oc_process_trees import LeafNode,OperatorNode
 import hashlib
-
+import pandas as pd
+import hashlib
+import numpy as np
 
 
 
@@ -40,6 +42,10 @@ def check_relation(ot1, ot2, relations):
                 return "Imp " + str(ot1) + " With " + str(ot2) + " (Concurrent)"
 
     return "Imp " + str(ot1) + " With " + str(ot2) + " (Ordered)"
+
+
+
+
 
 
 def get_extended_ocpt(ocpt, relations, candidates=None):

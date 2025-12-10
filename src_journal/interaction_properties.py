@@ -1,6 +1,112 @@
 import pandas
 
 
+def get_interaction_patterns_noise(relations, noise_threshold):
+
+    activities = relations["ocel:activity"].unique()
+    types = relations["ocel:type"].unique()
+
+    # Event → objects, Event → activity (duplicate-safe)
+    evt_objects = relations.groupby("ocel:eid")["ocel:oid"].apply(lambda x: tuple(sorted(set(x))))
+    evt_activity = relations.groupby("ocel:eid")["ocel:activity"].first()
+
+    # Object → type
+    obj_type = relations.groupby("ocel:oid")["ocel:type"].first()
+
+    # Build event table
+    identifiers = pandas.DataFrame({
+        "activity": evt_activity.loc[evt_objects.index],
+        "all": evt_objects
+    }, index=evt_objects.index)
+
+    # Add one column per object type
+    for t in types:
+        objs_of_t = obj_type[obj_type == t].index
+        identifiers[t] = identifiers["all"].apply(
+            lambda oids, ok=objs_of_t: tuple(oid for oid in oids if oid in ok)
+        )
+
+    # Prepare *probability* storage
+    P_related    = {a: {} for a in activities}
+    P_deficient  = {a: {} for a in activities}
+    P_convergent = {a: {} for a in activities}
+    P_divergent  = {a: {} for a in activities}
+
+    # ----- Compute all probabilities -----------------------------------------
+
+    for a in activities:
+
+        events_a = identifiers[identifiers["activity"] == a]
+        n_events = len(events_a)
+
+        for t in types:
+
+            # --- Relatedness ---------------------------------------------------
+            appears = events_a[t].apply(len) > 0
+            p_related = appears.mean() if n_events > 0 else 0.0
+            P_related[a][t] = p_related
+
+            # If not related → all others = 0
+            if p_related == 0:
+                P_deficient[a][t]  = 0.0
+                P_convergent[a][t] = 0.0
+                P_divergent[a][t]  = 0.0
+                continue
+
+            # --- Deficiency (instability of presence) -------------------------
+            P_deficient[a][t] = 1 - abs(2 * p_related - 1)
+
+            # --- Convergence ---------------------------------------------------
+            p_convergent = (events_a[t].apply(len) > 1).mean()
+            P_convergent[a][t] = p_convergent
+
+            # --- Divergence ----------------------------------------------------
+            contexts = {}
+            for eid, row in events_a.iterrows():
+                objs = row[t]
+                if objs:
+                    for o in objs:
+                        contexts.setdefault(o, set()).add(row["all"])
+
+            if len(contexts) == 0:
+                P_divergent[a][t] = 0.0
+            else:
+                divergent_objs = sum(len(ctxs) > 1 for ctxs in contexts.values())
+                P_divergent[a][t] = divergent_objs / len(contexts)
+
+    # --------------------------------------------------------------------------
+    # Now collapse probabilities to binary using noise_threshold
+    # and produce original-style output (sets)
+    # --------------------------------------------------------------------------
+
+    related_sets    = {a: set() for a in activities}
+    deficient_sets  = {a: set() for a in activities}
+    convergent_sets = {a: set() for a in activities}
+    divergent_sets  = {a: set() for a in activities}
+
+    for a in activities:
+        for t in types:
+
+            # Related?
+            if P_related[a][t] >= noise_threshold:
+                related_sets[a].add(t)
+            else:
+                # If not related → NONE of the others can occur
+                continue
+
+            # Deficient?
+            if P_deficient[a][t] >= noise_threshold:
+                deficient_sets[a].add(t)
+
+            # Convergent?
+            if P_convergent[a][t] >= noise_threshold:
+                convergent_sets[a].add(t)
+
+            # Divergent?
+            if P_divergent[a][t] >= noise_threshold:
+                divergent_sets[a].add(t)
+
+    return divergent_sets, convergent_sets, related_sets, deficient_sets
 
 def get_interaction_patterns(relations):
 

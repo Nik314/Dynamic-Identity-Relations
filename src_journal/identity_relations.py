@@ -313,7 +313,9 @@ def upcoming_subset(ocpt):
 def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed):
 
     if subset_needed:
-        subset_needed = not "subset" in str(ocpt.operator).lower() and upcoming_subset(ocpt)
+        subset_needed = upcoming_subset(ocpt) and not "subset" in str(ocpt.operator).lower()
+        if isinstance(ocpt,LeafNode):
+            return ocpt
         return OperatorNode(
             ocpt.operator,
             [get_extended_ocpt(sub, relations, candidates, noise_threshold, subset_needed) for sub in ocpt.subtrees]
@@ -325,7 +327,7 @@ def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_neede
         return ocpt
 
     if not candidates:
-        candidates = [{ot} for ot in relations["ocel:type"].unique()]
+        candidates = [{ot} for ot in sorted(relations["ocel:type"].unique())]
 
     activities = ocpt.get_activities()
     relation_types = ["strict_sync", "subset_sync", "implication"]

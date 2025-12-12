@@ -45,7 +45,7 @@ def extended_df2_miner_apply(log_path,noise_treshold):
     candidates = create_candidate_set(ocpt)
 
     #extend each candidate tree
-    extended_candidates = [get_extended_ocpt(tree,input_log) for tree in candidates]
+    extended_candidates = [get_extended_ocpt(tree,input_log,noise_threshold=1-noise_treshold) for tree in candidates]
 
     #select extended candidate with the most relations
     result = extended_candidates[0]

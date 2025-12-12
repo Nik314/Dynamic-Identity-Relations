@@ -42,6 +42,9 @@ class LeafNode:
     def get_unique_relations(self):
         return set()
 
+    def get_all_relations(self):
+        return []
+
 
 class OperatorNode:
 
@@ -77,6 +80,11 @@ class OperatorNode:
         else:
             return set(sum([list(sub.get_unique_relations()) for sub in self.subtrees],[]))
 
+    def get_all_relations(self):
+        if len(self.subtrees) == 1:
+            return self.subtrees[0].get_all_relations() + [(self.operator,self.get_activities())]
+        else:
+            return list(sum([list(sub.get_all_relations()) for sub in self.subtrees],[]))
 
 
 def load_from_pt(process_tree, related, divergence, convergence, deficiency):

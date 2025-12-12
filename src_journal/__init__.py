@@ -9,7 +9,7 @@ from src_journal.oc_process_trees import load_from_pt
 from src_journal.identity_relations import get_extended_ocpt, add_merge_split
 from src_journal.tree_normal_form import create_candidate_set
 
-def extended_df2_miner_apply(log_path,noise_treshold):
+def extended_df2_miner_apply(log_path,noise_treshold_control,noise_ident):
 
     try:
         input_log = pm4py.read_ocel2(log_path).relations
@@ -20,13 +20,13 @@ def extended_df2_miner_apply(log_path,noise_treshold):
     activity_count = input_log.groupby("ocel:activity")["ocel:eid"].nunique().to_dict()
     sorted_counts = list(reversed(sorted(activity_count.values())))
     cutoff = min([len(sorted_counts)] + [i for i in range(0,len(sorted_counts))
-        if sum(sorted_counts[:i]) >= sum(sorted_counts)*noise_treshold])
+        if sum(sorted_counts[:i]) >= sum(sorted_counts)*noise_treshold_control])
     allowed_counts = sorted_counts[:cutoff]
     allowed_activities = [a for a,v in activity_count.items() if v in allowed_counts]
     input_log = input_log[input_log["ocel:activity"].isin(allowed_activities)]
 
     #filtering multiplicity properties
-    div, con, rel, defi = get_interaction_patterns_noise(input_log,1-noise_treshold)
+    div, con, rel, defi = get_interaction_patterns_noise(input_log,1-noise_treshold_control)
     print("Interacting Properties Done")
 
     #extracting df2 graph
@@ -35,7 +35,7 @@ def extended_df2_miner_apply(log_path,noise_treshold):
 
 
     #filtering on the df2 graph edges
-    process_tree = pm4py.discover_process_tree_inductive(df2_graph,noise_threshold=1-noise_treshold)
+    process_tree = pm4py.discover_process_tree_inductive(df2_graph,noise_threshold=1-noise_treshold_control)
     print("Traditional Process Tree Done")
 
     #creating relation free OCPT
@@ -46,10 +46,10 @@ def extended_df2_miner_apply(log_path,noise_treshold):
     candidates = create_candidate_set(ocpt)
 
     #extend each candidate tree
-    extended_candidates = [get_extended_ocpt(tree,input_log,None,1-noise_treshold,False) for tree in candidates]
+    extended_candidates = [get_extended_ocpt(tree,input_log,None,1-noise_ident,False) for tree in candidates]
 
     #seperate handling for object merge & split
-    extended_candidates = [add_merge_split(tree,input_log,1-noise_treshold) for tree in extended_candidates]
+    extended_candidates = [add_merge_split(tree,input_log,1-noise_ident) for tree in extended_candidates]
 
     #select extended candidate with the most relations
     result = extended_candidates[0]

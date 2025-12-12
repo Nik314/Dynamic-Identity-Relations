@@ -284,104 +284,44 @@ def check_implication_k(relations, ot1, ot2, violation_threshold=0.0):
 
 def insert_subset_sync(ocpt, ot1, ot2, strict, sub, overlap, root=True):
 
+    print(ot1,ot2,strict,sub)
     if root:
         return OperatorNode(str(ot1) + " Strict Synchronization" + str(ot2),
-            subtrees=[ OperatorNode(ocpt.Operator,[insert_subset_sync(tree,ot1,ot2,strict,sub,overlap,False) for tree in ocpt.subtrees])])
+            subtrees=[ OperatorNode(ocpt.operator,[insert_subset_sync(tree,ot1,ot2,strict,sub,overlap,False) for tree in ocpt.subtrees])])
 
     elif isinstance(ocpt,OperatorNode) and all(a in sub for a in ocpt.get_activities()):
-        return OperatorNode(str(ot1) + " Overlap" if overlap else " Partition" +" Subset Synchronization" + str(ot2),
+        return OperatorNode(str(ot1) + (" Overlap" if overlap else " Partition") +" Subset Synchronization" + str(ot2),
                      subtrees=[ocpt])
-    elif isinstance(ocpt, OperatorNode):
+    elif isinstance(ocpt, OperatorNode) and any(a in sub for a in ocpt.get_activities()):
         return OperatorNode(ocpt.operator, [insert_subset_sync(tree, ot1, ot2, strict, sub, overlap,False) for tree in ocpt.subtrees])
-    else:
-        return OperatorNode(str(ot1) + " Overlap" if overlap else " Partition" +" Subset Synchronization" + str(ot2),subtrees=[ocpt])
+    elif any(a in sub for a in ocpt.get_activities()):
+        return OperatorNode(str(ot1) + (" Overlap" if overlap else " Partition") +" Subset Synchronization" + str(ot2),subtrees=[ocpt])
+    return ocpt
 
 
 
-def check_relation(ot1, ot2, relations,noise_threshold):
-
-    sync_result = check_strict_sync(relations, ot1, ot2,noise_threshold)
-    if sync_result:
-        return str(ot1) +  " Strict Synchronization "+str(ot2), None, None, None
-
-    activities_todo = set(relations["ocel:activity"].unique())
-    cluster = [{activities_todo.pop()}]
-    for a in activities_todo:
-        check = False
-        for index in range(len(cluster)):
-            sublog = relations[relations["ocel:activity"].isin(cluster[index] | {a})]
-            if check_strict_sync(sublog,ot1,ot2,noise_threshold):
-                cluster[index] = cluster[index] | {a}
-                check = True
-                break
-        if not check:
-            cluster+=[{a}]
-
-    candidates = [(sync,{a for a in relations["ocel:activity"].unique() if a not in sync}) for sync in cluster]
-
-    for strict, sub in candidates:
-        check = check_subset_sync(relations,ot1,ot2,strict,sub,noise_threshold)
-        if check:
-            return str(ot1) + " Strict Synchronization" + str(ot2), strict, sub, check_subset_overlap(relations,ot1,ot2,noise_threshold)
-
-    check = check_implication(relations,ot1,ot2,noise_threshold)
-    if check:
-        k_min = check_implication_k(relations,ot1,ot2,noise_threshold)
-        if k_min == 1:
-            return str(ot1) + " Ordered Implication " + str(ot2), None, None, None
-        elif k_min == math.inf:
-            return str(ot1) + " Concurrent Implication " + str(ot2), None, None, None
-        else:
-            return str(ot1) + f" {k_min}-Batch Implication) " + str(ot2), None, None, None
-
-    return None, None, None, None
-
-
-
-def get_extended_ocpt_old(ocpt, relations, candidates=None,noise_threshold = 0.0, subset_needed = False):
-
-    if subset_needed:
-        subset_needed = not "subset" in ocpt.operator
-        return OperatorNode(ocpt.operator,[get_extended_ocpt(sub,relations, candidates,noise_threshold, subset_needed) for sub in ocpt.subtrees])
-
+def upcoming_subset(ocpt):
 
     if isinstance(ocpt,LeafNode):
-        return ocpt
+        return False
 
-    else:
-        if not candidates:
-            candidates = [{ot} for ot in relations["ocel:type"].unique()]
-        activities = ocpt.get_activities()
-        for ot1 in candidates:
-            for ot2 in candidates:
-                if ot1 == ot2:
-                    continue
-                sub_log = relations[relations["ocel:type"].isin(ot1|ot2) & relations["ocel:activity"].isin(activities)]
-                operator, strict, sub, overlap = check_relation(ot1, ot2, sub_log,noise_threshold)
-
-                if operator:
-                    candidates = [ots for ots in candidates if ots != ot1 and ots != ot2] + [ot1 | ot2]
-                    if strict and sub:
-                        subset_needed = True
-                        ocpt = insert_subset_sync(ocpt, ot1, ot2,strict,sub, overlap)
-
-                    return OperatorNode(operator, [get_extended_ocpt(ocpt,relations,candidates,noise_threshold, subset_needed)])
-
-        return OperatorNode(ocpt.operator,[get_extended_ocpt(sub,relations, candidates,noise_threshold, subset_needed) for sub in ocpt.subtrees])
+    subresult = any(upcoming_subset(sub) for sub in ocpt.subtrees)
+    return subresult or "subset" in str(ocpt.operator).lower()
 
 
 
-
-def get_extended_ocpt(ocpt, relations, candidates=None, noise_threshold=0.0, subset_needed=False):
+def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed):
 
     if subset_needed:
-        subset_needed = not "subset" in ocpt.operator
+        subset_needed = not "subset" in str(ocpt.operator).lower() and upcoming_subset(ocpt)
         return OperatorNode(
             ocpt.operator,
             [get_extended_ocpt(sub, relations, candidates, noise_threshold, subset_needed) for sub in ocpt.subtrees]
         )
 
+
     if isinstance(ocpt, LeafNode):
+
         return ocpt
 
     if not candidates:
@@ -405,7 +345,6 @@ def get_extended_ocpt(ocpt, relations, candidates=None, noise_threshold=0.0, sub
                         operator = str(ot1) + " Strict Synchronization " + str(ot2)
 
                 elif relation_type == "subset_sync":
-                    # Inline subset sync logic to avoid recursion
                     activities_todo = set(sub_log["ocel:activity"].unique())
                     if activities_todo:
                         cluster = [{activities_todo.pop()}]
@@ -445,6 +384,7 @@ def get_extended_ocpt(ocpt, relations, candidates=None, noise_threshold=0.0, sub
                     if strict and sub:
                         subset_needed = True
                         ocpt = insert_subset_sync(ocpt, ot1, ot2, strict, sub, overlap)
+                        return get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed)
 
                     return OperatorNode(
                         operator,
@@ -457,3 +397,65 @@ def get_extended_ocpt(ocpt, relations, candidates=None, noise_threshold=0.0, sub
         ocpt.operator,
         [get_extended_ocpt(sub, relations, candidates, noise_threshold, subset_needed) for sub in ocpt.subtrees]
     )
+
+
+
+
+def add_merge_split(ocpt, log, noise_threshold, ot_violations=set()):
+
+    if isinstance(ocpt,OperatorNode) and operator != Operator.SEQUENCE:
+        return ocpt
+    elif isinstance(ocpt,OperatorNode) and operator == Operator.SEQUENCE:
+        violations = {ocpt.subtrees[index]:{ot for ot in get_related_types(ocpt.subtrees[index]) if
+            any(ot in get_related_types(ocpt.subtrees[j]) for j in range(0,index)) and
+            any(ot in get_related_types(ocpt.subtrees[j]) for j in range(index+1,len(ocpt.subtrees)))} for index in range(0,len(ocpt.subtrees))}
+        return OperatorNode(ocpt.operator,[add_merge_split(sub, log, noise_threshold, ot_violations | violations[sub]) for sub in ocpt.subtrees])
+    elif ocpt.activity != "":
+        available = {ot for ot in ocpt.related if ot not in ot_violations}
+        ot1, ot2 = object_types_first_or_last(log,ocpt.activity,available,noise_threshold)
+        if ot1 and ot2:
+            return OperatorNode(f"{str(ot1)} Object Merge & Split {str(ot2)}", subtrees=[ocpt])
+    else:
+        return ocpt
+
+
+
+def object_types_first_or_last(df, activity, available, noise_threshold):
+
+    sub_df = df[df["ocel:activity"] == activity]
+
+    # Count occurrences of the activity per object
+    counts = sub_df.groupby(["ocel:type", "ocel:oid"]).size().reset_index(name="count")
+    candidate_types = counts.groupby("ocel:type")["count"].apply(
+        lambda x: (x == 1).mean() >= (1 - noise_threshold)
+    )
+    candidate_types = candidate_types[candidate_types].index.tolist()
+    candidate_types = {ot for ot in candidate_types if ot in available}
+    if not candidate_types:
+        return [], []
+
+    sub_df = df[df["ocel:type"].isin(candidate_types)]
+    first_types = []
+    last_types = []
+
+    for obj_type in candidate_types:
+        type_df = sub_df[sub_df["ocel:type"] == obj_type]
+        grouped = type_df.groupby("ocel:oid")
+
+        first_flags = []
+        last_flags = []
+
+        for oid, g in grouped:
+            g_sorted = g.sort_values("ocel:timestamp")
+            first_flags.append(g_sorted.iloc[0]["ocel:activity"] == activity)
+            last_flags.append(g_sorted.iloc[-1]["ocel:activity"] == activity)
+
+        first_fraction = sum(first_flags) / len(first_flags)
+        last_fraction = sum(last_flags) / len(last_flags)
+
+        if first_fraction >= (1 - noise_threshold):
+            first_types.append(obj_type)
+        elif last_fraction >= (1 - noise_threshold):
+            last_types.append(obj_type)
+
+    return first_types, last_types

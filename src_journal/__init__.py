@@ -6,7 +6,7 @@ warnings.simplefilter(action="ignore", category=pandas.errors.SettingWithCopyWar
 from src_journal.interaction_properties import get_interaction_patterns_noise
 from src_journal.divergence_free_graph import get_divergence_free_graph
 from src_journal.oc_process_trees import load_from_pt
-from src_journal.identity_relations import get_extended_ocpt
+from src_journal.identity_relations import get_extended_ocpt, add_merge_split
 from src_journal.tree_normal_form import create_candidate_set
 
 def extended_df2_miner_apply(log_path,noise_treshold):
@@ -33,6 +33,7 @@ def extended_df2_miner_apply(log_path,noise_treshold):
     df2_graph = get_divergence_free_graph(input_log,div,rel)
     print("DF2 Graph Done")
 
+
     #filtering on the df2 graph edges
     process_tree = pm4py.discover_process_tree_inductive(df2_graph,noise_threshold=1-noise_treshold)
     print("Traditional Process Tree Done")
@@ -45,7 +46,10 @@ def extended_df2_miner_apply(log_path,noise_treshold):
     candidates = create_candidate_set(ocpt)
 
     #extend each candidate tree
-    extended_candidates = [get_extended_ocpt(tree,input_log,noise_threshold=1-noise_treshold) for tree in candidates]
+    extended_candidates = [get_extended_ocpt(tree,input_log,None,1-noise_treshold,False) for tree in candidates]
+
+    #seperate handling for object merge & split
+    extended_candidates = [add_merge_split(tree,input_log,1-noise_treshold) for tree in extended_candidates]
 
     #select extended candidate with the most relations
     result = extended_candidates[0]

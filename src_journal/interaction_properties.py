@@ -74,11 +74,6 @@ def get_interaction_patterns_noise(relations, noise_threshold):
                 divergent_objs = sum(len(ctxs) > 1 for ctxs in contexts.values())
                 P_divergent[a][t] = divergent_objs / len(contexts)
 
-    # --------------------------------------------------------------------------
-    # Now collapse probabilities to binary using noise_threshold
-    # and produce original-style output (sets)
-    # --------------------------------------------------------------------------
-
     related_sets    = {a: set() for a in activities}
     deficient_sets  = {a: set() for a in activities}
     convergent_sets = {a: set() for a in activities}
@@ -87,22 +82,17 @@ def get_interaction_patterns_noise(relations, noise_threshold):
     for a in activities:
         for t in types:
 
-            # Related?
             if P_related[a][t] >= noise_threshold:
                 related_sets[a].add(t)
             else:
-                # If not related → NONE of the others can occur
                 continue
 
-            # Deficient?
             if P_deficient[a][t] >= noise_threshold:
                 deficient_sets[a].add(t)
 
-            # Convergent?
             if P_convergent[a][t] >= noise_threshold:
                 convergent_sets[a].add(t)
 
-            # Divergent?
             if P_divergent[a][t] >= noise_threshold:
                 divergent_sets[a].add(t)
 

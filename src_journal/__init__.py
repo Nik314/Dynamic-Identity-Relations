@@ -19,10 +19,11 @@ def extended_df2_miner_apply(log_path,noise_treshold):
     #filtering on the input log
     activity_count = input_log.groupby("ocel:activity")["ocel:eid"].nunique().to_dict()
     sorted_counts = list(reversed(sorted(activity_count.values())))
-    cutoff = min([i for i in range(0,len(sorted_counts))
+    cutoff = min([len(sorted_counts)] + [i for i in range(0,len(sorted_counts))
         if sum(sorted_counts[:i]) >= sum(sorted_counts)*noise_treshold])
     allowed_counts = sorted_counts[:cutoff]
     allowed_activities = [a for a,v in activity_count.items() if v in allowed_counts]
+
     input_log = input_log[input_log["ocel:activity"].isin(allowed_activities)]
 
     #filtering multiplicity properties

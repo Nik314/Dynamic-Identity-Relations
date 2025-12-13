@@ -9,7 +9,11 @@ from src_journal.oc_process_trees import load_from_pt
 from src_journal.identity_relations import get_extended_ocpt, add_merge_split
 from src_journal.tree_normal_form import create_candidate_set
 
-def extended_df2_miner_apply(log_path,noise_treshold_control,noise_ident):
+
+
+
+
+def extended_df2_miner_apply(log_path,noise_treshold_control,noise_ident,blocked=[]):
 
     try:
         input_log = pm4py.read_ocel2(log_path).relations
@@ -46,7 +50,7 @@ def extended_df2_miner_apply(log_path,noise_treshold_control,noise_ident):
     candidates = create_candidate_set(ocpt)
 
     #extend each candidate tree
-    extended_candidates = [get_extended_ocpt(tree,input_log,None,1-noise_ident,False) for tree in candidates]
+    extended_candidates = [get_extended_ocpt(tree,input_log,None,1-noise_ident,False,blocked=blocked) for tree in candidates]
 
     #seperate handling for object merge & split
     extended_candidates = [add_merge_split(tree,input_log,1-noise_ident) for tree in extended_candidates]

@@ -1,0 +1,73 @@
+->
+	submit application
+		 Related Types: {'vacancies', 'applicants', 'applications'}
+		 Divergent Types: {'vacancies', 'applicants'}
+		 Convergent Types: set()
+		 Deficient Types: {'vacancies'}
+	assign recruiter
+		 Related Types: {'recruiters', 'applications'}
+		 Divergent Types: {'recruiters'}
+		 Convergent Types: {'recruiters'}
+		 Deficient Types: set()
+	{'applicants'} Strict Synchronization {'applications'}
+		{'managers'} Strict Synchronization {'recruiters'}
+			{'vacancies'} Strict Synchronization {'managers', 'recruiters'}
+				X
+
+						 Related Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+						 Divergent Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+						 Convergent Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+						 Deficient Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+					assign vacancy
+						 Related Types: {'vacancies', 'applications'}
+						 Divergent Types: {'vacancies'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+	first screening
+		 Related Types: {'recruiters', 'applications'}
+		 Divergent Types: {'recruiters'}
+		 Convergent Types: set()
+		 Deficient Types: set()
+	X
+
+			 Related Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+			 Divergent Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+			 Convergent Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+			 Deficient Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+		->
+			{'applicants'} Strict Synchronization {'applications'}
+				{'managers'} Strict Synchronization {'vacancies'}
+					+
+						check references
+							 Related Types: {'recruiters', 'applications'}
+							 Divergent Types: {'recruiters'}
+							 Convergent Types: {'recruiters'}
+							 Deficient Types: set()
+						consult manager
+							 Related Types: {'managers', 'recruiters', 'applications'}
+							 Divergent Types: {'managers', 'recruiters'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+			X
+
+					 Related Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+					 Divergent Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+					 Convergent Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+					 Deficient Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+				->
+					invite for interview
+						 Related Types: {'vacancies', 'recruiters', 'applicants', 'applications'}
+						 Divergent Types: {'vacancies', 'recruiters', 'applicants'}
+						 Convergent Types: {'recruiters'}
+						 Deficient Types: set()
+					conduct interview
+						 Related Types: {'recruiters', 'vacancies', 'managers', 'applications', 'applicants'}
+						 Divergent Types: {'vacancies', 'recruiters', 'applicants', 'managers'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+	send rejection
+		 Related Types: {'recruiters', 'applicants', 'applications'}
+		 Divergent Types: {'recruiters', 'applicants'}
+		 Convergent Types: set()
+		 Deficient Types: set()
+

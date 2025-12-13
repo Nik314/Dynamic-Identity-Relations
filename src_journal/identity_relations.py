@@ -2,27 +2,38 @@ from src_journal.oc_process_trees import LeafNode,OperatorNode
 from src_journal.tree_normal_form import *
 from collections import defaultdict
 import math
+import pandas
 from collections import defaultdict
 from itertools import combinations
 
+
 def check_strict_sync(relations, ot1, ot2, violation_threshold):
 
-    df = relations.copy()
+    grouped = relations.groupby("ocel:eid")
 
-    grouped = df.groupby("ocel:eid")
-    event_sets = grouped.agg({
-        "ocel:oid": lambda x: frozenset(x),
-        "ocel:type": lambda x: list(x)
+    oids = grouped["ocel:oid"].apply(frozenset)
+    types = grouped["ocel:type"].apply(list)
+
+    event_sets = pandas.DataFrame({
+        "ocel:oid": oids,
+        "ocel:type": types
     })
 
-    event_sets["ot1_set"] = event_sets.apply(
-        lambda row: frozenset([oid for oid, t in zip(row["ocel:oid"], row["ocel:type"]) if t in ot1]), axis=1
-    )
-    event_sets["ot2_set"] = event_sets.apply(
-        lambda row: frozenset([oid for oid, t in zip(row["ocel:oid"], row["ocel:type"]) if t in ot2]), axis=1
-    )
+    event_sets["ot1_set"] = [
+        frozenset(oid for oid, t in zip(oids_i, types_i) if t in ot1)
+        for oids_i, types_i in zip(event_sets["ocel:oid"], event_sets["ocel:type"])
+    ]
 
-    event_sets = event_sets[(event_sets["ot1_set"]) | (event_sets["ot2_set"])]
+    event_sets["ot2_set"] = [
+        frozenset(oid for oid, t in zip(oids_i, types_i) if t in ot2)
+        for oids_i, types_i in zip(event_sets["ocel:oid"], event_sets["ocel:type"])
+    ]
+
+    event_sets = event_sets[
+        (event_sets["ot1_set"].apply(len) > 0) |
+        (event_sets["ot2_set"].apply(len) > 0)
+    ]
+
     if event_sets.empty:
         return True
 
@@ -48,7 +59,6 @@ def check_strict_sync(relations, ot1, ot2, violation_threshold):
             violating_sets.add(s2)
 
     from collections import defaultdict
-
     obj_to_ot1_sets = defaultdict(set)
     obj_to_ot2_sets = defaultdict(set)
 
@@ -59,18 +69,17 @@ def check_strict_sync(relations, ot1, ot2, violation_threshold):
         for oid in s2:
             obj_to_ot2_sets[oid].add(s2)
 
-    for sets in obj_to_ot1_sets.values():
-        if len(sets) > 1:
-            violating_sets.update(sets)
-    for sets in obj_to_ot2_sets.values():
-        if len(sets) > 1:
-            violating_sets.update(sets)
+    for sets_ in obj_to_ot1_sets.values():
+        if len(sets_) > 1:
+            violating_sets.update(sets_)
+    for sets_ in obj_to_ot2_sets.values():
+        if len(sets_) > 1:
+            violating_sets.update(sets_)
 
     if not all_sets:
         return True
 
-    violation_fraction = len(violating_sets) / len(all_sets)
-    return violation_fraction <= violation_threshold
+    return len(violating_sets) / len(all_sets) <= violation_threshold
 
 
 def check_subset_sync( relations,ot1, ot2, strict_activities,  relaxed_activities, violation_threshold):
@@ -310,7 +319,7 @@ def upcoming_subset(ocpt):
 
 
 
-def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed):
+def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed,blocked):
 
     if subset_needed:
         subset_needed = upcoming_subset(ocpt) and not "subset" in str(ocpt.operator).lower()
@@ -318,7 +327,7 @@ def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_neede
             return ocpt
         return OperatorNode(
             ocpt.operator,
-            [get_extended_ocpt(sub, relations, candidates, noise_threshold, subset_needed) for sub in ocpt.subtrees]
+            [get_extended_ocpt(sub, relations, candidates, noise_threshold, subset_needed,blocked) for sub in ocpt.subtrees]
         )
 
 
@@ -331,6 +340,7 @@ def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_neede
 
     activities = ocpt.get_activities()
     relation_types = ["strict_sync", "subset_sync", "implication"]
+    relation_types = [r for r in relation_types if r not in blocked]
 
     for relation_type in relation_types:
         for ot1 in candidates:
@@ -386,18 +396,18 @@ def get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_neede
                     if strict and sub:
                         subset_needed = True
                         ocpt = insert_subset_sync(ocpt, ot1, ot2, strict, sub, overlap)
-                        return get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed)
+                        return get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed,blocked)
 
                     return OperatorNode(
                         operator,
-                        [get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed)]
+                        [get_extended_ocpt(ocpt, relations, candidates, noise_threshold, subset_needed,blocked)]
                     )
 
                 else:
                     print("Nothing found for ",relation_type)
     return OperatorNode(
         ocpt.operator,
-        [get_extended_ocpt(sub, relations, candidates, noise_threshold, subset_needed) for sub in ocpt.subtrees]
+        [get_extended_ocpt(sub, relations, candidates, noise_threshold, subset_needed,blocked) for sub in ocpt.subtrees]
     )
 
 

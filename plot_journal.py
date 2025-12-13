@@ -7,8 +7,7 @@ from sympy import false
 import os
 import pm4py
 
-
-
+from src_journal import extended_df2_miner_apply
 
 data = pandas.read_csv("result_journal.csv")
 data["Noise Parameter Sum"] = data["Parameter1"] + data["Parameter2"]
@@ -17,7 +16,7 @@ plt.grid()
 ax.set_xticks([0.5 + i for i in range(0, 10)])
 ax.set_xticklabels([str(i) + "                 " for i in range(1, 11)])
 plt.savefig("runtime.png")
-plt.show()
+#plt.show()
 
 
 
@@ -67,6 +66,7 @@ print(data.groupby("Parameter1")["Average Relation Count"].mean())
 print(data.groupby("Parameter2")["Average Relation Count"].mean())
 
 
-
-
-
+blocked = ["subset_sync", "implication"]
+eocpt = extended_df2_miner_apply("data/10_ocel_legacy_recruiting.jsonocel",
+                        0.90,0.7,blocked)
+print(str(eocpt))

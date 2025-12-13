@@ -4,14 +4,22 @@ import pandas
 import seaborn
 import matplotlib.pyplot as plt
 from sympy import false
+import os
+import pm4py
+
+
+
 
 data = pandas.read_csv("result_journal.csv")
-ax = seaborn.stripplot(data, hue="Parameter1", x="Log", y="Runtime", size=10, jitter=0.45)
+data["Noise Parameter Sum"] = data["Parameter1"] + data["Parameter2"]
+ax = seaborn.stripplot(data, hue="Noise Parameter Sum", x="Log", y="Runtime", size=10, jitter=0.45)
 plt.grid()
 ax.set_xticks([0.5 + i for i in range(0, 10)])
 ax.set_xticklabels([str(i) + "                 " for i in range(1, 11)])
 plt.savefig("runtime.png")
 plt.show()
+
+
 
 strict_rank = {
     "strict":0,
@@ -22,31 +30,43 @@ strict_rank = {
     "concurrent":5
 }
 
-def get_types(relation_string):
-    recording = False
-    result = []
-    for c in relation_string:
-        if recording:
-            result[-1] += c
-        if c == "'" and recording:
-            recording = False
-        elif c =="'" and not recording:
-            recording = True
-            result.append("")
-    return result
+
+def evaluate_relations_average_coverage(relation_string):
+    relation = eval(relation_string)
+    result = {key:[] for key in strict_rank.keys()}
+    for operator, activities in relation:
+        for key in result.keys():
+            if key in operator.lower():
+                result[key].append(len(activities))
+    return sum([(sum(result[key]) / len(result[key]) if result[key] else 0) for key in result.keys()]) / 6
 
 
-def average_count(relation_string):
-    result = [relation_string.count(ot) for ot in get_types(relation_string)]
-    return sum(result) if result else 0
+def evaluate_relations_per_kind(relation_string,key):
+    relation = eval(relation_string)
+    return len([operator for operator,activities in relation if key in operator.lower()])
 
 
-data["Count"] = data["Relations"].apply(lambda entry:average_count(entry))
-data["Parameter"] = data["Parameter1"] + data["Parameter2"]
-data["Log"] = data["Log"].apply(lambda entry:entry.split("_")[0])
-ax = seaborn.stripplot(data, hue="Parameter2", x="Log", y="Count", size=10, jitter=0.45)
-plt.grid()
-ax.set_xticks([0.5 + i for i in range(0, 10)])
-ax.set_xticklabels([str(i) + "                 " for i in range(1, 11)])
-plt.savefig("rank.png")
-plt.show()
+def evaluate_relation_count(relation_string):
+    relation = eval(relation_string)
+    result = {operator for operator,activities in relation}
+    return len(result)
+
+data["Average Activity Coverage"] = data["Relations"].apply(lambda entry:evaluate_relations_average_coverage(entry))
+data["Average Relation Count"] = data["Relations"].apply(lambda entry:evaluate_relation_count(entry))
+
+
+
+for key in strict_rank.keys():
+    print(key)
+    data[key] = data["Relations"].apply(lambda entry: evaluate_relations_per_kind(entry, key))
+    print(data.groupby("Parameter1")[key].mean())
+    print(data.groupby("Parameter2")[key].mean())
+
+print(data.groupby("Noise Parameter Sum")["Average Relation Count"].mean())
+print(data.groupby("Parameter1")["Average Relation Count"].mean())
+print(data.groupby("Parameter2")["Average Relation Count"].mean())
+
+
+
+
+

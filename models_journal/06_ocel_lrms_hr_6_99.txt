@@ -1,0 +1,42 @@
+{'JobRequisition'} Strict Synchronization {'Recruiter'}
+	->
+		Submit Application
+			 Related Types: {'Candidate', 'JobRequisition'}
+			 Divergent Types: {'JobRequisition'}
+			 Convergent Types: set()
+			 Deficient Types: set()
+		Screen Resume
+			 Related Types: {'Candidate', 'Recruiter'}
+			 Divergent Types: {'Recruiter'}
+			 Convergent Types: set()
+			 Deficient Types: set()
+		{'Candidate'} Strict Synchronization {'Recruiter', 'JobRequisition'}
+			X
+				
+					 Related Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Divergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Convergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Deficient Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+				->
+					Schedule Initial Interview
+						 Related Types: {'Candidate', 'Recruiter'}
+						 Divergent Types: {'Recruiter'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					Conduct Initial Interview
+						 Related Types: {'Candidate', 'Recruiter'}
+						 Divergent Types: {'Recruiter'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+		{'Candidate'} Strict Synchronization {'Recruiter', 'JobRequisition'}
+			X
+				
+					 Related Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Divergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Convergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Deficient Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+				Send Rejection Letter
+					 Related Types: {'Candidate'}
+					 Divergent Types: set()
+					 Convergent Types: set()
+					 Deficient Types: set()

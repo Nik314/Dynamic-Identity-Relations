@@ -1,0 +1,29 @@
+{'case:concept:name'} Strict Synchronization {'case:repo'}
+	->
+		created
+			 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+			 Divergent Types: {'case:repo', 'org:resource'}
+			 Convergent Types: set()
+			 Deficient Types: set()
+		*
+			
+				 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+				 Divergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+				 Convergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+				 Deficient Types: {'case:repo', 'org:resource', 'case:concept:name'}
+			X
+				closed
+					 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Divergent Types: {'case:repo', 'org:resource'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				commented
+					 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Divergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				merged
+					 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Divergent Types: {'case:repo', 'org:resource'}
+					 Convergent Types: set()
+					 Deficient Types: set()

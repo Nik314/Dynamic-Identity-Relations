@@ -1,0 +1,115 @@
+{'applications'} Strict Synchronization{'managers'}
+	->
+		open vacancy
+			 Related Types: {'managers', 'vacancies'}
+			 Divergent Types: {'managers'}
+			 Convergent Types: set()
+			 Deficient Types: set()
+		X
+			
+				 Related Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+				 Divergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+				 Convergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+				 Deficient Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+			{'applicants'} Strict Synchronization {'offers'}
+				{'recruiters'} Strict Synchronization{'vacancies'}
+					->
+						{'recruiters'} Overlap Subset Synchronization{'vacancies'}
+							submit application
+								 Related Types: {'applicants', 'applications', 'vacancies'}
+								 Divergent Types: {'applicants', 'vacancies'}
+								 Convergent Types: set()
+								 Deficient Types: {'vacancies'}
+						X
+							
+								 Related Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+								 Divergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+								 Convergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+								 Deficient Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+							assign recruiter
+								 Related Types: {'recruiters', 'applications'}
+								 Divergent Types: {'recruiters'}
+								 Convergent Types: {'recruiters'}
+								 Deficient Types: set()
+		*
+			
+				 Related Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+				 Divergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+				 Convergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+				 Deficient Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+			X
+				first screening
+					 Related Types: {'recruiters', 'applications'}
+					 Divergent Types: {'recruiters'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				{'applications'} Partition Subset Synchronization{'managers'}
+					make job offer
+						 Related Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+						 Divergent Types: {'recruiters', 'managers', 'vacancies'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				check references
+					 Related Types: {'recruiters', 'applications'}
+					 Divergent Types: {'recruiters'}
+					 Convergent Types: {'recruiters'}
+					 Deficient Types: set()
+				offer accepted and hired
+					 Related Types: {'applicants', 'recruiters', 'offers', 'applications', 'vacancies'}
+					 Divergent Types: {'recruiters'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				assign vacancy
+					 Related Types: {'applications', 'vacancies'}
+					 Divergent Types: {'vacancies'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				{'applications'} Partition Subset Synchronization{'managers'}
+					consult manager
+						 Related Types: {'recruiters', 'managers', 'applications'}
+						 Divergent Types: {'recruiters', 'managers'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'applications'} Partition Subset Synchronization{'managers'}
+					conduct interview
+						 Related Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+						 Divergent Types: {'recruiters', 'managers', 'applicants', 'vacancies'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				close vacancy for new applications
+					 Related Types: {'vacancies'}
+					 Divergent Types: set()
+					 Convergent Types: set()
+					 Deficient Types: set()
+				invite for interview
+					 Related Types: {'recruiters', 'applicants', 'applications', 'vacancies'}
+					 Divergent Types: {'recruiters', 'applicants', 'vacancies'}
+					 Convergent Types: {'recruiters'}
+					 Deficient Types: set()
+		X
+			send rejection
+				 Related Types: {'recruiters', 'applications', 'applicants'}
+				 Divergent Types: {'recruiters', 'applicants'}
+				 Convergent Types: set()
+				 Deficient Types: set()
+			{'applicants'} Strict Synchronization {'offers'}
+				{'applications', 'managers'} Strict Synchronization {'applicants', 'offers'}
+					{'offers', 'applications', 'applicants', 'managers'} Strict Synchronization{'vacancies'}
+						->
+							X
+								
+									 Related Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+									 Divergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+									 Convergent Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+									 Deficient Types: {'applicants', 'recruiters', 'managers', 'offers', 'applications', 'vacancies'}
+								job offer declined
+									 Related Types: {'applicants', 'recruiters', 'offers', 'applications', 'vacancies'}
+									 Divergent Types: {'recruiters', 'vacancies'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+							{'offers', 'applications', 'applicants', 'managers'} Overlap Subset Synchronization{'vacancies'}
+								close vacancy (no hire)
+									 Related Types: {'vacancies'}
+									 Divergent Types: set()
+									 Convergent Types: set()
+									 Deficient Types: set()

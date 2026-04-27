@@ -1,0 +1,93 @@
+{'Customer'} Strict Synchronization {'Payment'}
+	{'Invoice'} Strict Synchronization {'Product'}
+		{'Order'} Strict Synchronization {'Shipment'}
+			{'Customer', 'Payment'} Strict Synchronization{'Product', 'Invoice'}
+				X
+					
+						 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+						 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+						 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+						 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+					->
+						Receive Customer Order
+							 Related Types: {'Order', 'Customer'}
+							 Divergent Types: {'Customer'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+						Validate Customer Order
+							 Related Types: {'Order'}
+							 Divergent Types: set()
+							 Convergent Types: set()
+							 Deficient Types: set()
+						Perform Credit Check
+							 Related Types: {'Order', 'Customer'}
+							 Divergent Types: {'Customer'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+						X
+							
+								 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+								 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+								 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+								 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+							->
+								Approve Order
+									 Related Types: {'Order', 'Customer'}
+									 Divergent Types: {'Customer'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+								Schedule Order Fulfillment
+									 Related Types: {'Order'}
+									 Divergent Types: set()
+									 Convergent Types: set()
+									 Deficient Types: set()
+								Generate Pick List
+									 Related Types: {'Order', 'Product'}
+									 Divergent Types: {'Product'}
+									 Convergent Types: {'Product'}
+									 Deficient Types: set()
+								Pack Items
+									 Related Types: {'Order'}
+									 Divergent Types: set()
+									 Convergent Types: set()
+									 Deficient Types: set()
+								Generate Shipping Label
+									 Related Types: {'Shipment', 'Order'}
+									 Divergent Types: set()
+									 Convergent Types: set()
+									 Deficient Types: set()
+								Ship Order
+									 Related Types: {'Shipment', 'Order'}
+									 Divergent Types: set()
+									 Convergent Types: set()
+									 Deficient Types: set()
+								{'Customer', 'Payment'} Partition Subset Synchronization{'Product', 'Invoice'}
+									Generate Invoice
+										 Related Types: {'Order', 'Invoice'}
+										 Divergent Types: set()
+										 Convergent Types: set()
+										 Deficient Types: set()
+								{'Customer', 'Payment'} Partition Subset Synchronization{'Product', 'Invoice'}
+									Send Invoice to Customer
+										 Related Types: {'Invoice', 'Customer'}
+										 Divergent Types: {'Customer'}
+										 Convergent Types: set()
+										 Deficient Types: set()
+								X
+									
+										 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+										 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+										 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+										 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+									{'Shipment', 'Order'} Strict Synchronization {'Customer', 'Product', 'Payment', 'Invoice'}
+										->
+											Receive Payment
+												 Related Types: {'Payment', 'Invoice'}
+												 Divergent Types: set()
+												 Convergent Types: set()
+												 Deficient Types: set()
+											Apply Payment
+												 Related Types: {'Payment', 'Invoice'}
+												 Divergent Types: set()
+												 Convergent Types: set()
+												 Deficient Types: set()

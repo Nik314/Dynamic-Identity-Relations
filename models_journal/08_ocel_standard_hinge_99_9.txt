@@ -1,0 +1,77 @@
+{'FemalePart'} Strict Synchronization {'SteelCoil'}
+	{'FormedPart'} Strict Synchronization {'Hinge'}
+		{'Machine'} Strict Synchronization {'SteelPin'}
+			{'MalePart'} Strict Synchronization {'SteelSheet'}
+				{'Worker'} Strict Synchronization {'FormedPart', 'Hinge'}
+					{'Workstation'} Strict Synchronization{'SteelCoil', 'FemalePart'}
+						->
+							SplitSteelSheet
+								 Related Types: {'SteelCoil', 'SteelSheet', 'Workstation', 'Machine'}
+								 Divergent Types: {'SteelCoil', 'Workstation', 'Machine'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+							HeatSteelSheet
+								 Related Types: {'Workstation', 'SteelSheet', 'Machine'}
+								 Divergent Types: {'Workstation', 'Machine'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+							FormSteelSheet
+								 Related Types: {'Workstation', 'SteelSheet', 'FormedPart', 'Machine'}
+								 Divergent Types: {'Workstation', 'Machine'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+							CoatPart
+								 Related Types: {'Workstation', 'FormedPart', 'Machine'}
+								 Divergent Types: {'Workstation', 'Machine'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+							X
+								
+									 Related Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+									 Divergent Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+									 Convergent Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+									 Deficient Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+								->
+									X
+										{'SteelPin', 'Machine'} Strict Synchronization {'SteelSheet', 'MalePart'}
+											{'FormedPart', 'Hinge', 'Worker'} Strict Synchronization {'SteelPin', 'SteelSheet', 'MalePart', 'Machine'}
+												{'SteelCoil', 'FemalePart', 'Workstation'} Strict Synchronization{'FormedPart', 'MalePart', 'SteelPin', 'SteelSheet', 'Hinge', 'Worker', 'Machine'}
+													->
+														CuttFemalePart
+															 Related Types: {'FemalePart', 'FormedPart', 'Workstation', 'Machine'}
+															 Divergent Types: {'Workstation', 'Machine'}
+															 Convergent Types: set()
+															 Deficient Types: set()
+														{'SteelCoil', 'FemalePart', 'Workstation'} Overlap Subset Synchronization{'FormedPart', 'MalePart', 'SteelPin', 'SteelSheet', 'Hinge', 'Worker', 'Machine'}
+															CheckFemalePart
+																 Related Types: {'FemalePart', 'Worker', 'Workstation'}
+																 Divergent Types: {'Workstation', 'Worker'}
+																 Convergent Types: set()
+																 Deficient Types: set()
+										{'SteelPin', 'Machine'} Strict Synchronization {'FormedPart', 'Hinge', 'Worker'}
+											{'SteelSheet', 'MalePart'} Strict Synchronization {'SteelCoil', 'FemalePart', 'Workstation'}
+												{'FormedPart', 'SteelPin', 'Hinge', 'Worker', 'Machine'} Strict Synchronization{'SteelCoil', 'MalePart', 'SteelSheet', 'FemalePart', 'Workstation'}
+													->
+														CuttMalePart
+															 Related Types: {'MalePart', 'Workstation', 'FormedPart', 'Machine'}
+															 Divergent Types: {'Workstation', 'Machine'}
+															 Convergent Types: set()
+															 Deficient Types: set()
+														{'FormedPart', 'SteelPin', 'Hinge', 'Worker', 'Machine'} Overlap Subset Synchronization{'SteelCoil', 'MalePart', 'SteelSheet', 'FemalePart', 'Workstation'}
+															CheckMalePart
+																 Related Types: {'MalePart', 'Workstation', 'Worker'}
+																 Divergent Types: {'Workstation', 'Worker'}
+																 Convergent Types: set()
+																 Deficient Types: set()
+									X
+										
+											 Related Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+											 Divergent Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+											 Convergent Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+											 Deficient Types: {'SteelCoil', 'SteelPin', 'FemalePart', 'FormedPart', 'MalePart', 'Workstation', 'Worker', 'SteelSheet', 'Machine', 'Hinge'}
+										{'Workstation'} Partition Subset Synchronization{'SteelCoil', 'FemalePart'}
+											AssembleHinge
+												 Related Types: {'MalePart', 'Workstation', 'Machine', 'FemalePart', 'Hinge', 'SteelPin'}
+												 Divergent Types: {'Workstation', 'Machine'}
+												 Convergent Types: set()
+												 Deficient Types: set()

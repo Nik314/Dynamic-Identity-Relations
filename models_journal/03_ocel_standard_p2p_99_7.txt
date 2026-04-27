@@ -1,0 +1,74 @@
+{'invoice receipt'} Strict Synchronization {'material'}
+	{'payment'} Strict Synchronization {'purchase_requisition'}
+		{'quotation'} Strict Synchronization {'material', 'invoice receipt'}
+			{'goods receipt'} Strict Synchronization{'payment', 'purchase_requisition'}
+				->
+					X
+						
+							 Related Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+							 Divergent Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+							 Convergent Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+							 Deficient Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+						->
+							{'goods receipt'} Overlap Subset Synchronization{'payment', 'purchase_requisition'}
+								Create Purchase Requisition
+									 Related Types: {'material', 'purchase_requisition'}
+									 Divergent Types: set()
+									 Convergent Types: {'material'}
+									 Deficient Types: set()
+							X
+								
+									 Related Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+									 Divergent Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+									 Convergent Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+									 Deficient Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+								{'goods receipt'} Overlap Subset Synchronization{'payment', 'purchase_requisition'}
+									Approve Purchase Requisition
+										 Related Types: {'material', 'purchase_requisition'}
+										 Divergent Types: set()
+										 Convergent Types: {'material'}
+										 Deficient Types: set()
+					{'goods receipt'} Overlap Subset Synchronization{'payment', 'purchase_requisition'}
+						Create Request for Quotation
+							 Related Types: {'quotation', 'purchase_requisition'}
+							 Divergent Types: set()
+							 Convergent Types: set()
+							 Deficient Types: set()
+					Create Purchase Order
+						 Related Types: {'quotation', 'purchase_order'}
+						 Divergent Types: {'quotation'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					Approve Purchase Order
+						 Related Types: {'quotation', 'purchase_order'}
+						 Divergent Types: {'quotation'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					*
+						
+							 Related Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+							 Divergent Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+							 Convergent Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+							 Deficient Types: {'material', 'goods receipt', 'invoice receipt', 'purchase_requisition', 'payment', 'quotation', 'purchase_order'}
+						X
+							{'goods receipt'} Overlap Subset Synchronization{'payment', 'purchase_requisition'}
+								Execute Payment
+									 Related Types: {'purchase_order', 'invoice receipt', 'goods receipt', 'payment'}
+									 Divergent Types: set()
+									 Convergent Types: {'purchase_order', 'goods receipt'}
+									 Deficient Types: set()
+							Create Invoice Receipt
+								 Related Types: {'goods receipt', 'invoice receipt'}
+								 Divergent Types: {'invoice receipt'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+							Create Goods Receipt
+								 Related Types: {'purchase_order', 'goods receipt'}
+								 Divergent Types: {'purchase_order', 'goods receipt'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+							Perform Two-Way Match
+								 Related Types: {'goods receipt', 'invoice receipt'}
+								 Divergent Types: {'invoice receipt'}
+								 Convergent Types: set()
+								 Deficient Types: set()

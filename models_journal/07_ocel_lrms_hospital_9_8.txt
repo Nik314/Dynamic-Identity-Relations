@@ -1,0 +1,46 @@
+{'Bed'} Strict Synchronization {'InsuranceCompany'}
+	{'Nurse'} Strict Synchronization {'Physician'}
+		{'Room'} Strict Synchronization {'Nurse', 'Physician'}
+			{'Patient'} Strict Synchronization{'Bed', 'InsuranceCompany'}
+				->
+					{'Patient'} Overlap Subset Synchronization{'Bed', 'InsuranceCompany'}
+						Pre-Admission Consultation
+							 Related Types: {'Physician', 'Patient'}
+							 Divergent Types: {'Physician'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+					{'Patient'} Overlap Subset Synchronization{'Bed', 'InsuranceCompany'}
+						Insurance Verification
+							 Related Types: {'Patient', 'InsuranceCompany'}
+							 Divergent Types: {'InsuranceCompany'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+					{'Patient'} Overlap Subset Synchronization{'Bed', 'InsuranceCompany'}
+						Appointment Scheduling
+							 Related Types: {'Patient'}
+							 Divergent Types: set()
+							 Convergent Types: set()
+							 Deficient Types: set()
+					{'Patient'} Overlap Subset Synchronization{'Bed', 'InsuranceCompany'}
+						Patient Arrival
+							 Related Types: {'Patient'}
+							 Divergent Types: set()
+							 Convergent Types: set()
+							 Deficient Types: set()
+					{'Patient'} Overlap Subset Synchronization{'Bed', 'InsuranceCompany'}
+						Registration
+							 Related Types: {'Patient', 'Nurse'}
+							 Divergent Types: {'Nurse'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+					{'Patient'} Overlap Subset Synchronization{'Bed', 'InsuranceCompany'}
+						Initial Evaluation
+							 Related Types: {'Patient', 'Nurse'}
+							 Divergent Types: {'Nurse'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+					Assign Bed
+						 Related Types: {'Room', 'Patient', 'Bed'}
+						 Divergent Types: {'Room', 'Bed'}
+						 Convergent Types: set()
+						 Deficient Types: set()

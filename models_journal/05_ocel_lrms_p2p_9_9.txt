@@ -1,0 +1,74 @@
+{'Goods Receipt'} Strict Synchronization {'Payment'}
+	{'Supplier'} Strict Synchronization {'Payment', 'Goods Receipt'}
+		{'Invoice'} Strict Synchronization{'Purchase Order'}
+			->
+				*
+					
+						 Related Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+						 Divergent Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+						 Convergent Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+						 Deficient Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+					X
+						{'Invoice'} Partition Subset Synchronization{'Purchase Order'}
+							Create PO (Batch)
+								 Related Types: {'Purchase Requisition', 'Purchase Order'}
+								 Divergent Types: {'Purchase Requisition'}
+								 Convergent Types: {'Purchase Requisition'}
+								 Deficient Types: set()
+						{'Invoice'} Partition Subset Synchronization{'Purchase Order'}
+							Approve PO
+								 Related Types: {'Purchase Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+						Create PR
+							 Related Types: {'Purchase Requisition'}
+							 Divergent Types: set()
+							 Convergent Types: set()
+							 Deficient Types: set()
+						{'Invoice'} Partition Subset Synchronization{'Purchase Order'}
+							Send PO to Supplier
+								 Related Types: {'Supplier', 'Purchase Order'}
+								 Divergent Types: {'Supplier'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+						Approve PR
+							 Related Types: {'Purchase Requisition'}
+							 Divergent Types: set()
+							 Convergent Types: set()
+							 Deficient Types: set()
+				X
+					
+						 Related Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+						 Divergent Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+						 Convergent Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+						 Deficient Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+					*
+						
+							 Related Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+							 Divergent Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+							 Convergent Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+							 Deficient Types: {'Goods Receipt', 'Purchase Requisition', 'Purchase Order', 'Payment', 'Invoice', 'Supplier'}
+						X
+							Receive Invoice
+								 Related Types: {'Invoice', 'Purchase Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+							{'Invoice'} Partition Subset Synchronization{'Purchase Order'}
+								Receive Goods
+									 Related Types: {'Goods Receipt', 'Purchase Order'}
+									 Divergent Types: set()
+									 Convergent Types: set()
+									 Deficient Types: set()
+							{'Invoice'} Partition Subset Synchronization{'Purchase Order'}
+								Make Payment
+									 Related Types: {'Payment', 'Invoice', 'Supplier'}
+									 Divergent Types: {'Supplier'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+							Three-way Match - Successful
+								 Related Types: {'Goods Receipt', 'Invoice', 'Purchase Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()

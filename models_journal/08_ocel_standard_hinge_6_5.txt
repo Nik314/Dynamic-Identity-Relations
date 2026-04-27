@@ -1,0 +1,26 @@
+{'FormedPart'} Strict Synchronization {'SteelCoil'}
+	{'Machine'} Strict Synchronization {'Workstation'}
+		{'SteelSheet'} Strict Synchronization{'Machine', 'Workstation'}
+			->
+				{'SteelSheet'} Partition Subset Synchronization{'Machine', 'Workstation'}
+					SplitSteelSheet
+						 Related Types: {'SteelCoil', 'SteelSheet', 'Workstation', 'Machine'}
+						 Divergent Types: {'SteelCoil', 'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'SteelSheet'} Partition Subset Synchronization{'Machine', 'Workstation'}
+					HeatSteelSheet
+						 Related Types: {'Workstation', 'SteelSheet', 'Machine'}
+						 Divergent Types: {'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				FormSteelSheet
+					 Related Types: {'Workstation', 'SteelSheet', 'FormedPart', 'Machine'}
+					 Divergent Types: {'Workstation', 'Machine'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				CoatPart
+					 Related Types: {'Workstation', 'FormedPart', 'Machine'}
+					 Divergent Types: {'Workstation', 'Machine'}
+					 Convergent Types: set()
+					 Deficient Types: set()

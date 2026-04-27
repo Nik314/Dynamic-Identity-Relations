@@ -1,0 +1,26 @@
+{'applications'} Strict Synchronization {'vacancies'}
+	{'applicants'} Strict Synchronization{'recruiters'}
+		->
+			{'applicants'} Overlap Subset Synchronization{'recruiters'}
+				submit application
+					 Related Types: {'applications', 'applicants', 'vacancies'}
+					 Divergent Types: {'applicants', 'vacancies'}
+					 Convergent Types: set()
+					 Deficient Types: {'vacancies'}
+			assign recruiter
+				 Related Types: {'recruiters', 'applications'}
+				 Divergent Types: {'recruiters'}
+				 Convergent Types: {'recruiters'}
+				 Deficient Types: set()
+			{'applicants'} Overlap Subset Synchronization{'recruiters'}
+				first screening
+					 Related Types: {'recruiters', 'applications'}
+					 Divergent Types: {'recruiters'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+			{'applicants'} Overlap Subset Synchronization{'recruiters'}
+				send rejection
+					 Related Types: {'recruiters', 'applications', 'applicants'}
+					 Divergent Types: {'recruiters', 'applicants'}
+					 Convergent Types: set()
+					 Deficient Types: set()

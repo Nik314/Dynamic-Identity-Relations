@@ -1,0 +1,50 @@
+{'applicants'} Strict Synchronization {'managers'}
+	{'applicants', 'managers'} Strict Synchronization{'recruiters'}
+		->
+			submit application
+				 Related Types: {'applications', 'applicants', 'vacancies'}
+				 Divergent Types: {'applicants', 'vacancies'}
+				 Convergent Types: set()
+				 Deficient Types: {'vacancies'}
+			{'applicants', 'managers'} Partition Subset Synchronization{'recruiters'}
+				assign recruiter
+					 Related Types: {'recruiters', 'applications'}
+					 Divergent Types: {'recruiters'}
+					 Convergent Types: {'recruiters'}
+					 Deficient Types: set()
+			{'applicants', 'managers'} Partition Subset Synchronization{'recruiters'}
+				first screening
+					 Related Types: {'recruiters', 'applications'}
+					 Divergent Types: {'recruiters'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+			X
+				
+					 Related Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+					 Divergent Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+					 Convergent Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+					 Deficient Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+				+
+					{'applicants', 'managers'} Partition Subset Synchronization{'recruiters'}
+						check references
+							 Related Types: {'recruiters', 'applications'}
+							 Divergent Types: {'recruiters'}
+							 Convergent Types: {'recruiters'}
+							 Deficient Types: set()
+					consult manager
+						 Related Types: {'recruiters', 'managers', 'applications'}
+						 Divergent Types: {'recruiters', 'managers'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+			X
+				
+					 Related Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+					 Divergent Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+					 Convergent Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+					 Deficient Types: {'applicants', 'recruiters', 'managers', 'applications', 'vacancies'}
+				{'applicants', 'managers'} Partition Subset Synchronization{'recruiters'}
+					send rejection
+						 Related Types: {'recruiters', 'applications', 'applicants'}
+						 Divergent Types: {'recruiters', 'applicants'}
+						 Convergent Types: set()
+						 Deficient Types: set()

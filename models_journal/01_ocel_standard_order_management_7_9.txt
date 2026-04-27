@@ -1,0 +1,49 @@
+{'customers'} Strict Synchronization{'items'}
+	->
+		place order
+			 Related Types: {'items', 'products', 'customers', 'orders'}
+			 Divergent Types: {'products', 'customers'}
+			 Convergent Types: {'items', 'products'}
+			 Deficient Types: set()
+		+
+			->
+				X
+					
+						 Related Types: {'customers', 'items', 'products', 'employees', 'orders'}
+						 Divergent Types: {'customers', 'items', 'products', 'employees', 'orders'}
+						 Convergent Types: {'customers', 'items', 'products', 'employees', 'orders'}
+						 Deficient Types: {'customers', 'items', 'products', 'employees', 'orders'}
+					{'customers'} Partition Subset Synchronization{'items'}
+						{'employees'} Strict Synchronization {'orders'}
+							{'products'} Strict Synchronization {'items', 'customers'}
+								{'products', 'items', 'customers'} Strict Synchronization{'orders', 'employees'}
+									->
+										item out of stock
+											 Related Types: {'items', 'products', 'employees'}
+											 Divergent Types: {'employees', 'products'}
+											 Convergent Types: set()
+											 Deficient Types: set()
+										{'products', 'items', 'customers'} Partition Subset Synchronization{'orders', 'employees'}
+											reorder item
+												 Related Types: {'items', 'products', 'employees'}
+												 Divergent Types: {'employees', 'products'}
+												 Convergent Types: set()
+												 Deficient Types: set()
+				{'customers'} Partition Subset Synchronization{'items'}
+					pick item
+						 Related Types: {'items', 'products', 'employees'}
+						 Divergent Types: {'employees', 'products'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+			->
+				confirm order
+					 Related Types: {'customers', 'items', 'products', 'employees', 'orders'}
+					 Divergent Types: {'employees', 'products', 'customers'}
+					 Convergent Types: {'items', 'products'}
+					 Deficient Types: set()
+				{'customers'} Partition Subset Synchronization{'items'}
+					pay order
+						 Related Types: {'items', 'products', 'orders'}
+						 Divergent Types: {'products'}
+						 Convergent Types: {'items', 'products'}
+						 Deficient Types: set()

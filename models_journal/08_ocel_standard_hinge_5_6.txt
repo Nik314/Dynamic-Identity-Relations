@@ -1,0 +1,27 @@
+{'FormedPart'} Strict Synchronization {'SteelCoil'}
+	{'Machine'} Strict Synchronization {'Workstation'}
+		{'SteelSheet'} Strict Synchronization{'FormedPart', 'SteelCoil'}
+			->
+				{'SteelSheet'} Overlap Subset Synchronization{'FormedPart', 'SteelCoil'}
+					SplitSteelSheet
+						 Related Types: {'SteelCoil', 'SteelSheet', 'Workstation', 'Machine'}
+						 Divergent Types: {'SteelCoil', 'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'SteelSheet'} Overlap Subset Synchronization{'FormedPart', 'SteelCoil'}
+					HeatSteelSheet
+						 Related Types: {'Workstation', 'SteelSheet', 'Machine'}
+						 Divergent Types: {'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				FormSteelSheet
+					 Related Types: {'Workstation', 'SteelSheet', 'FormedPart', 'Machine'}
+					 Divergent Types: {'Workstation', 'Machine'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				{'SteelSheet'} Overlap Subset Synchronization{'FormedPart', 'SteelCoil'}
+					CoatPart
+						 Related Types: {'Workstation', 'FormedPart', 'Machine'}
+						 Divergent Types: {'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()

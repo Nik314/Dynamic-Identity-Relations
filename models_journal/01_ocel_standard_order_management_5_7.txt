@@ -1,0 +1,25 @@
+{'customers'} Strict Synchronization{'employees'}
+	->
+		place order
+			 Related Types: {'items', 'products', 'customers', 'orders'}
+			 Divergent Types: {'products', 'customers'}
+			 Convergent Types: {'items', 'products'}
+			 Deficient Types: set()
+		+
+			pick item
+				 Related Types: {'items', 'products', 'employees'}
+				 Divergent Types: {'employees', 'products'}
+				 Convergent Types: set()
+				 Deficient Types: set()
+			->
+				{'customers'} Partition Subset Synchronization{'employees'}
+					confirm order
+						 Related Types: {'customers', 'items', 'products', 'employees', 'orders'}
+						 Divergent Types: {'employees', 'products', 'customers'}
+						 Convergent Types: {'items', 'products'}
+						 Deficient Types: set()
+				pay order
+					 Related Types: {'items', 'products', 'orders'}
+					 Divergent Types: {'products'}
+					 Convergent Types: {'items', 'products'}
+					 Deficient Types: set()

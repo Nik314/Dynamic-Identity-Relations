@@ -1,0 +1,23 @@
+{'invoice receipt'} Strict Synchronization {'purchase_order'}
+	*
+		
+			 Related Types: {'purchase_order', 'invoice receipt', 'goods receipt'}
+			 Divergent Types: {'purchase_order', 'invoice receipt', 'goods receipt'}
+			 Convergent Types: {'purchase_order', 'invoice receipt', 'goods receipt'}
+			 Deficient Types: {'purchase_order', 'invoice receipt', 'goods receipt'}
+		X
+			Create Invoice Receipt
+				 Related Types: {'goods receipt', 'invoice receipt'}
+				 Divergent Types: {'invoice receipt'}
+				 Convergent Types: set()
+				 Deficient Types: set()
+			Create Goods Receipt
+				 Related Types: {'purchase_order', 'goods receipt'}
+				 Divergent Types: {'purchase_order', 'goods receipt'}
+				 Convergent Types: set()
+				 Deficient Types: set()
+			Perform Two-Way Match
+				 Related Types: {'goods receipt', 'invoice receipt'}
+				 Divergent Types: {'invoice receipt'}
+				 Convergent Types: set()
+				 Deficient Types: set()

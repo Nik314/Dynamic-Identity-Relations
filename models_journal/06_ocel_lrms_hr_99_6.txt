@@ -1,0 +1,166 @@
+{'Assessment'} Strict Synchronization {'Candidate'}
+	{'HiringManager'} Strict Synchronization {'Recruiter'}
+		{'Interviewer'} Strict Synchronization{'JobRequisition'}
+			->
+				{'Interviewer'} Overlap Subset Synchronization{'JobRequisition'}
+					Create Job Requisition
+						 Related Types: {'HiringManager', 'JobRequisition'}
+						 Divergent Types: {'HiringManager'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'Interviewer'} Overlap Subset Synchronization{'JobRequisition'}
+					Approve Job Requisition
+						 Related Types: {'JobRequisition'}
+						 Divergent Types: set()
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'Interviewer'} Overlap Subset Synchronization{'JobRequisition'}
+					Post Job Opening
+						 Related Types: {'JobRequisition', 'Recruiter'}
+						 Divergent Types: {'Recruiter'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'Interviewer'} Overlap Subset Synchronization{'JobRequisition'}
+					Submit Application
+						 Related Types: {'Candidate', 'JobRequisition'}
+						 Divergent Types: {'JobRequisition'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				Screen Resume
+					 Related Types: {'Candidate', 'Recruiter'}
+					 Divergent Types: {'Recruiter'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				X
+					
+						 Related Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Divergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Convergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Deficient Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+					->
+						Schedule Initial Interview
+							 Related Types: {'Candidate', 'Recruiter'}
+							 Divergent Types: {'Recruiter'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+						Conduct Initial Interview
+							 Related Types: {'Candidate', 'Recruiter'}
+							 Divergent Types: {'Recruiter'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+						X
+							
+								 Related Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+								 Divergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+								 Convergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+								 Deficient Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+							->
+								Send Assessment
+									 Related Types: {'Assessment', 'Candidate'}
+									 Divergent Types: {'Assessment'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+								Complete Assessment
+									 Related Types: {'Assessment', 'Candidate'}
+									 Divergent Types: {'Assessment'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+								Review Assessment
+									 Related Types: {'HiringManager', 'Assessment', 'Candidate'}
+									 Divergent Types: {'HiringManager', 'Assessment'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+								X
+									
+										 Related Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+										 Divergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+										 Convergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+										 Deficient Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+									->
+										{'Interviewer'} Overlap Subset Synchronization{'JobRequisition'}
+											Schedule Panel Interview
+												 Related Types: {'Interviewer', 'Candidate'}
+												 Divergent Types: {'Interviewer'}
+												 Convergent Types: {'Interviewer'}
+												 Deficient Types: set()
+										Conduct Panel Interview
+											 Related Types: {'Interviewer', 'Candidate'}
+											 Divergent Types: {'Interviewer'}
+											 Convergent Types: {'Interviewer'}
+											 Deficient Types: set()
+										Evaluate Interview
+											 Related Types: {'HiringManager', 'Candidate'}
+											 Divergent Types: {'HiringManager'}
+											 Convergent Types: set()
+											 Deficient Types: set()
+										X
+											
+												 Related Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+												 Divergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+												 Convergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+												 Deficient Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+											{'Assessment', 'Candidate'} Strict Synchronization {'Recruiter', 'HiringManager'}
+												{'Interviewer', 'JobRequisition'} Strict Synchronization {'Recruiter', 'Assessment', 'Candidate', 'HiringManager'}
+													->
+														Initiate Background Check
+															 Related Types: {'Candidate'}
+															 Divergent Types: set()
+															 Convergent Types: set()
+															 Deficient Types: set()
+														Complete Background Check
+															 Related Types: {'Candidate'}
+															 Divergent Types: set()
+															 Convergent Types: set()
+															 Deficient Types: set()
+				X
+					Send Rejection Letter
+						 Related Types: {'Candidate'}
+						 Divergent Types: set()
+						 Convergent Types: set()
+						 Deficient Types: set()
+					{'Assessment', 'Candidate'} Strict Synchronization {'Interviewer', 'JobRequisition'}
+						{'Recruiter', 'HiringManager'} Strict Synchronization{'Assessment', 'JobRequisition', 'Candidate', 'Interviewer'}
+							->
+								{'Recruiter', 'HiringManager'} Overlap Subset Synchronization{'Assessment', 'JobRequisition', 'Candidate', 'Interviewer'}
+									Prepare Offer Letter
+										 Related Types: {'HiringManager', 'Candidate'}
+										 Divergent Types: {'HiringManager'}
+										 Convergent Types: set()
+										 Deficient Types: set()
+								Send Offer Letter
+									 Related Types: {'Candidate'}
+									 Divergent Types: set()
+									 Convergent Types: set()
+									 Deficient Types: set()
+								X
+									
+										 Related Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+										 Divergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+										 Convergent Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+										 Deficient Types: {'HiringManager', 'Interviewer', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+									->
+										Candidate Accept Offer
+											 Related Types: {'Candidate'}
+											 Divergent Types: set()
+											 Convergent Types: set()
+											 Deficient Types: set()
+										Start Onboarding
+											 Related Types: {'Candidate'}
+											 Divergent Types: set()
+											 Convergent Types: set()
+											 Deficient Types: set()
+										Complete HR Paperwork
+											 Related Types: {'Candidate'}
+											 Divergent Types: set()
+											 Convergent Types: set()
+											 Deficient Types: set()
+										Attend Orientation Training
+											 Related Types: {'Candidate'}
+											 Divergent Types: set()
+											 Convergent Types: set()
+											 Deficient Types: set()
+										Complete Onboarding
+											 Related Types: {'Candidate'}
+											 Divergent Types: set()
+											 Convergent Types: set()
+											 Deficient Types: set()

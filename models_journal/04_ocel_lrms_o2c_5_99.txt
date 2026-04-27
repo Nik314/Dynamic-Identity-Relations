@@ -1,0 +1,81 @@
+{'Customer'} Strict Synchronization {'Shipment'}
+	{'Invoice'} Strict Synchronization{'Order'}
+		X
+			
+				 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+				 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+				 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+				 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+			->
+				{'Invoice'} Overlap Subset Synchronization{'Order'}
+					Receive Customer Order
+						 Related Types: {'Order', 'Customer'}
+						 Divergent Types: {'Customer'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'Invoice'} Overlap Subset Synchronization{'Order'}
+					Validate Customer Order
+						 Related Types: {'Order'}
+						 Divergent Types: set()
+						 Convergent Types: set()
+						 Deficient Types: set()
+				{'Invoice'} Overlap Subset Synchronization{'Order'}
+					Perform Credit Check
+						 Related Types: {'Order', 'Customer'}
+						 Divergent Types: {'Customer'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				X
+					
+						 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+						 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+						 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+						 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice'}
+					->
+						{'Invoice'} Overlap Subset Synchronization{'Order'}
+							Approve Order
+								 Related Types: {'Order', 'Customer'}
+								 Divergent Types: {'Customer'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+						{'Invoice'} Overlap Subset Synchronization{'Order'}
+							Schedule Order Fulfillment
+								 Related Types: {'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+						{'Invoice'} Overlap Subset Synchronization{'Order'}
+							Generate Pick List
+								 Related Types: {'Order', 'Product'}
+								 Divergent Types: {'Product'}
+								 Convergent Types: {'Product'}
+								 Deficient Types: set()
+						{'Invoice'} Overlap Subset Synchronization{'Order'}
+							Pack Items
+								 Related Types: {'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+						{'Invoice'} Overlap Subset Synchronization{'Order'}
+							Generate Shipping Label
+								 Related Types: {'Shipment', 'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+						{'Invoice'} Overlap Subset Synchronization{'Order'}
+							Ship Order
+								 Related Types: {'Shipment', 'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+						Generate Invoice
+							 Related Types: {'Order', 'Invoice'}
+							 Divergent Types: set()
+							 Convergent Types: set()
+							 Deficient Types: set()
+						{'Invoice'} Overlap Subset Synchronization{'Order'}
+							Send Invoice to Customer
+								 Related Types: {'Invoice', 'Customer'}
+								 Divergent Types: {'Customer'}
+								 Convergent Types: set()
+								 Deficient Types: set()

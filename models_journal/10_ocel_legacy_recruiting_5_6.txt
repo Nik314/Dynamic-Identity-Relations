@@ -1,0 +1,24 @@
+{'applicants'} Strict Synchronization{'applications'}
+	->
+		{'applicants'} Partition Subset Synchronization{'applications'}
+			submit application
+				 Related Types: {'applications', 'applicants', 'vacancies'}
+				 Divergent Types: {'applicants', 'vacancies'}
+				 Convergent Types: set()
+				 Deficient Types: {'vacancies'}
+		assign recruiter
+			 Related Types: {'recruiters', 'applications'}
+			 Divergent Types: {'recruiters'}
+			 Convergent Types: {'recruiters'}
+			 Deficient Types: set()
+		first screening
+			 Related Types: {'recruiters', 'applications'}
+			 Divergent Types: {'recruiters'}
+			 Convergent Types: set()
+			 Deficient Types: set()
+		{'applicants'} Partition Subset Synchronization{'applications'}
+			send rejection
+				 Related Types: {'recruiters', 'applications', 'applicants'}
+				 Divergent Types: {'recruiters', 'applicants'}
+				 Convergent Types: set()
+				 Deficient Types: set()

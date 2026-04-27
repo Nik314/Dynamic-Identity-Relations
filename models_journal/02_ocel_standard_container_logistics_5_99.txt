@@ -1,0 +1,12 @@
+{'Container'} Strict Synchronization {'Truck'}
+	->
+		Collect Goods
+			 Related Types: {'Handling Unit'}
+			 Divergent Types: set()
+			 Convergent Types: set()
+			 Deficient Types: set()
+		Load Truck
+			 Related Types: {'Truck', 'Container', 'Handling Unit'}
+			 Divergent Types: {'Truck', 'Container'}
+			 Convergent Types: set()
+			 Deficient Types: set()

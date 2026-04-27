@@ -1,0 +1,96 @@
+{'Customer'} Strict Synchronization {'Payment'}
+	{'Invoice'} Strict Synchronization {'Shipment'}
+		{'Product'} Strict Synchronization{'Customer', 'Payment'}
+			X
+				
+					 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+					 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+					 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+					 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+				->
+					{'Product'} Overlap Subset Synchronization{'Customer', 'Payment'}
+						Receive Customer Order
+							 Related Types: {'Order', 'Customer'}
+							 Divergent Types: {'Customer'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+					Validate Customer Order
+						 Related Types: {'Order'}
+						 Divergent Types: set()
+						 Convergent Types: set()
+						 Deficient Types: set()
+					{'Product'} Overlap Subset Synchronization{'Customer', 'Payment'}
+						Perform Credit Check
+							 Related Types: {'Order', 'Customer'}
+							 Divergent Types: {'Customer'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+					X
+						
+							 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+							 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+							 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+							 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+						->
+							{'Product'} Overlap Subset Synchronization{'Customer', 'Payment'}
+								Approve Order
+									 Related Types: {'Order', 'Customer'}
+									 Divergent Types: {'Customer'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+							Schedule Order Fulfillment
+								 Related Types: {'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+							Generate Pick List
+								 Related Types: {'Order', 'Product'}
+								 Divergent Types: {'Product'}
+								 Convergent Types: {'Product'}
+								 Deficient Types: set()
+							Pack Items
+								 Related Types: {'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+							Generate Shipping Label
+								 Related Types: {'Shipment', 'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+							Ship Order
+								 Related Types: {'Shipment', 'Order'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+							Generate Invoice
+								 Related Types: {'Order', 'Invoice'}
+								 Divergent Types: set()
+								 Convergent Types: set()
+								 Deficient Types: set()
+							{'Product'} Overlap Subset Synchronization{'Customer', 'Payment'}
+								Send Invoice to Customer
+									 Related Types: {'Invoice', 'Customer'}
+									 Divergent Types: {'Customer'}
+									 Convergent Types: set()
+									 Deficient Types: set()
+							X
+								
+									 Related Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+									 Divergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+									 Convergent Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+									 Deficient Types: {'Customer', 'Product', 'Shipment', 'Order', 'Invoice', 'Payment'}
+								{'Product'} Overlap Subset Synchronization{'Customer', 'Payment'}
+									{'Order'} Strict Synchronization {'Shipment', 'Invoice'}
+										{'Payment', 'Customer', 'Product'} Strict Synchronization {'Shipment', 'Order', 'Invoice'}
+											->
+												Receive Payment
+													 Related Types: {'Payment', 'Invoice'}
+													 Divergent Types: set()
+													 Convergent Types: set()
+													 Deficient Types: set()
+												Apply Payment
+													 Related Types: {'Payment', 'Invoice'}
+													 Divergent Types: set()
+													 Convergent Types: set()
+													 Deficient Types: set()

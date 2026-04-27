@@ -1,0 +1,69 @@
+{'customers'} Strict Synchronization {'packages'}
+	{'employees'} Strict Synchronization{'items'}
+		->
+			{'employees'} Overlap Subset Synchronization{'items'}
+				place order
+					 Related Types: {'items', 'products', 'customers', 'orders'}
+					 Divergent Types: {'products', 'customers'}
+					 Convergent Types: {'items', 'products'}
+					 Deficient Types: set()
+			+
+				{'employees'} Overlap Subset Synchronization{'items'}
+					{'orders'} Strict Synchronization{'products'}
+						->
+							confirm order
+								 Related Types: {'customers', 'items', 'products', 'employees', 'orders'}
+								 Divergent Types: {'employees', 'products', 'customers'}
+								 Convergent Types: {'items', 'products'}
+								 Deficient Types: set()
+							{'orders'} Partition Subset Synchronization{'products'}
+								pay order
+									 Related Types: {'items', 'products', 'orders'}
+									 Divergent Types: {'products'}
+									 Convergent Types: {'items', 'products'}
+									 Deficient Types: set()
+				->
+					X
+						
+							 Related Types: {'packages', 'customers', 'items', 'products', 'employees', 'orders'}
+							 Divergent Types: {'packages', 'customers', 'items', 'products', 'employees', 'orders'}
+							 Convergent Types: {'packages', 'customers', 'items', 'products', 'employees', 'orders'}
+							 Deficient Types: {'packages', 'customers', 'items', 'products', 'employees', 'orders'}
+						{'orders'} Strict Synchronization {'products'}
+							{'packages', 'customers'} Strict Synchronization {'orders', 'products'}
+								{'employees', 'items'} Concurrent Implication {'orders', 'packages', 'customers', 'products'}
+									->
+										item out of stock
+											 Related Types: {'items', 'products', 'employees'}
+											 Divergent Types: {'employees', 'products'}
+											 Convergent Types: set()
+											 Deficient Types: set()
+										reorder item
+											 Related Types: {'items', 'products', 'employees'}
+											 Divergent Types: {'employees', 'products'}
+											 Convergent Types: set()
+											 Deficient Types: set()
+					+
+						{'employees'} Overlap Subset Synchronization{'items'}
+							create package
+								 Related Types: {'packages', 'products', 'employees', 'items'}
+								 Divergent Types: {'employees', 'products'}
+								 Convergent Types: {'items', 'products'}
+								 Deficient Types: set()
+						pick item
+							 Related Types: {'items', 'products', 'employees'}
+							 Divergent Types: {'employees', 'products'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+					{'employees'} Overlap Subset Synchronization{'items'}
+						send package
+							 Related Types: {'packages', 'products', 'employees', 'items'}
+							 Divergent Types: {'employees', 'products'}
+							 Convergent Types: {'items', 'products', 'employees'}
+							 Deficient Types: set()
+					{'employees'} Overlap Subset Synchronization{'items'}
+						package delivered
+							 Related Types: {'packages', 'products', 'employees', 'items'}
+							 Divergent Types: {'employees', 'products'}
+							 Convergent Types: {'items', 'products'}
+							 Deficient Types: set()

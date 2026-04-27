@@ -1,0 +1,14 @@
+{'Container'} Strict Synchronization {'Truck'}
+	{'Handling Unit'} Strict Synchronization{'Container', 'Truck'}
+		->
+			Collect Goods
+				 Related Types: {'Handling Unit'}
+				 Divergent Types: set()
+				 Convergent Types: set()
+				 Deficient Types: set()
+			{'Handling Unit'} Overlap Subset Synchronization{'Container', 'Truck'}
+				Load Truck
+					 Related Types: {'Truck', 'Container', 'Handling Unit'}
+					 Divergent Types: {'Truck', 'Container'}
+					 Convergent Types: set()
+					 Deficient Types: set()

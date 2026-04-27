@@ -1,0 +1,32 @@
+{'case:concept:name'} Strict Synchronization {'case:repo'}
+	{'case:concept:name', 'case:repo'} Strict Synchronization{'org:resource'}
+		*
+			*
+				
+					 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Divergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Convergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Deficient Types: {'case:repo', 'org:resource', 'case:concept:name'}
+				{'case:concept:name', 'case:repo'} Partition Subset Synchronization{'org:resource'}
+					commented
+						 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+						 Divergent Types: {'case:repo', 'case:concept:name'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+			X
+				
+					 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Divergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Convergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					 Deficient Types: {'case:repo', 'org:resource', 'case:concept:name'}
+				*
+					
+						 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+						 Divergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+						 Convergent Types: {'case:repo', 'org:resource', 'case:concept:name'}
+						 Deficient Types: {'case:repo', 'org:resource', 'case:concept:name'}
+					closed
+						 Related Types: {'case:repo', 'org:resource', 'case:concept:name'}
+						 Divergent Types: {'case:repo'}
+						 Convergent Types: set()
+						 Deficient Types: set()

@@ -1,0 +1,69 @@
+{'Assessment'} Strict Synchronization {'JobRequisition'}
+	{'HiringManager'} Strict Synchronization {'Recruiter'}
+		{'Candidate'} Strict Synchronization{'Assessment', 'JobRequisition'}
+			->
+				{'Candidate'} Partition Subset Synchronization{'Assessment', 'JobRequisition'}
+					Submit Application
+						 Related Types: {'Candidate', 'JobRequisition'}
+						 Divergent Types: {'JobRequisition'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+				Screen Resume
+					 Related Types: {'Candidate', 'Recruiter'}
+					 Divergent Types: {'Recruiter'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+				X
+					
+						 Related Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Divergent Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Convergent Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Deficient Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+					->
+						Schedule Initial Interview
+							 Related Types: {'Candidate', 'Recruiter'}
+							 Divergent Types: {'Recruiter'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+						Conduct Initial Interview
+							 Related Types: {'Candidate', 'Recruiter'}
+							 Divergent Types: {'Recruiter'}
+							 Convergent Types: set()
+							 Deficient Types: set()
+						X
+							
+								 Related Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+								 Divergent Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+								 Convergent Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+								 Deficient Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+							{'Candidate'} Partition Subset Synchronization{'Assessment', 'JobRequisition'}
+								{'Recruiter', 'HiringManager'} Strict Synchronization{'Assessment', 'JobRequisition', 'Candidate'}
+									->
+										{'Recruiter', 'HiringManager'} Partition Subset Synchronization{'Assessment', 'JobRequisition', 'Candidate'}
+											Send Assessment
+												 Related Types: {'Assessment', 'Candidate'}
+												 Divergent Types: {'Assessment'}
+												 Convergent Types: set()
+												 Deficient Types: set()
+										{'Recruiter', 'HiringManager'} Partition Subset Synchronization{'Assessment', 'JobRequisition', 'Candidate'}
+											Complete Assessment
+												 Related Types: {'Assessment', 'Candidate'}
+												 Divergent Types: {'Assessment'}
+												 Convergent Types: set()
+												 Deficient Types: set()
+										Review Assessment
+											 Related Types: {'HiringManager', 'Assessment', 'Candidate'}
+											 Divergent Types: {'HiringManager', 'Assessment'}
+											 Convergent Types: set()
+											 Deficient Types: set()
+				X
+					
+						 Related Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Divergent Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Convergent Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+						 Deficient Types: {'HiringManager', 'Candidate', 'Recruiter', 'Assessment', 'JobRequisition'}
+					Send Rejection Letter
+						 Related Types: {'Candidate'}
+						 Divergent Types: set()
+						 Convergent Types: set()
+						 Deficient Types: set()

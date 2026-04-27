@@ -1,0 +1,43 @@
+{'FemalePart'} Strict Synchronization {'SteelCoil'}
+	{'FormedPart'} Strict Synchronization {'Worker'}
+		{'SteelSheet'} Strict Synchronization {'Workstation'}
+			{'Machine'} Strict Synchronization{'SteelCoil', 'FemalePart'}
+				->
+					SplitSteelSheet
+						 Related Types: {'SteelCoil', 'SteelSheet', 'Workstation', 'Machine'}
+						 Divergent Types: {'SteelCoil', 'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					HeatSteelSheet
+						 Related Types: {'Workstation', 'SteelSheet', 'Machine'}
+						 Divergent Types: {'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					FormSteelSheet
+						 Related Types: {'Workstation', 'SteelSheet', 'FormedPart', 'Machine'}
+						 Divergent Types: {'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					CoatPart
+						 Related Types: {'Workstation', 'FormedPart', 'Machine'}
+						 Divergent Types: {'Workstation', 'Machine'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					X
+						
+							 Related Types: {'Workstation', 'Worker', 'SteelSheet', 'Machine', 'SteelCoil', 'FemalePart', 'FormedPart'}
+							 Divergent Types: {'Workstation', 'Worker', 'SteelSheet', 'Machine', 'SteelCoil', 'FemalePart', 'FormedPart'}
+							 Convergent Types: {'Workstation', 'Worker', 'SteelSheet', 'Machine', 'SteelCoil', 'FemalePart', 'FormedPart'}
+							 Deficient Types: {'Workstation', 'Worker', 'SteelSheet', 'Machine', 'SteelCoil', 'FemalePart', 'FormedPart'}
+						->
+							CuttFemalePart
+								 Related Types: {'FemalePart', 'FormedPart', 'Workstation', 'Machine'}
+								 Divergent Types: {'Workstation', 'Machine'}
+								 Convergent Types: set()
+								 Deficient Types: set()
+							{'Machine'} Partition Subset Synchronization{'SteelCoil', 'FemalePart'}
+								CheckFemalePart
+									 Related Types: {'FemalePart', 'Worker', 'Workstation'}
+									 Divergent Types: {'Workstation', 'Worker'}
+									 Convergent Types: set()
+									 Deficient Types: set()

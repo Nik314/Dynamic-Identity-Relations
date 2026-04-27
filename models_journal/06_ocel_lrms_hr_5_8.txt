@@ -1,0 +1,43 @@
+{'JobRequisition'} Strict Synchronization {'Recruiter'}
+	{'Candidate'} Strict Synchronization{'Recruiter', 'JobRequisition'}
+		->
+			{'Candidate'} Partition Subset Synchronization{'Recruiter', 'JobRequisition'}
+				Submit Application
+					 Related Types: {'Candidate', 'JobRequisition'}
+					 Divergent Types: {'JobRequisition'}
+					 Convergent Types: set()
+					 Deficient Types: set()
+			Screen Resume
+				 Related Types: {'Candidate', 'Recruiter'}
+				 Divergent Types: {'Recruiter'}
+				 Convergent Types: set()
+				 Deficient Types: set()
+			X
+				
+					 Related Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Divergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Convergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Deficient Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+				->
+					Schedule Initial Interview
+						 Related Types: {'Candidate', 'Recruiter'}
+						 Divergent Types: {'Recruiter'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+					Conduct Initial Interview
+						 Related Types: {'Candidate', 'Recruiter'}
+						 Divergent Types: {'Recruiter'}
+						 Convergent Types: set()
+						 Deficient Types: set()
+			X
+				
+					 Related Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Divergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Convergent Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+					 Deficient Types: {'Recruiter', 'Candidate', 'JobRequisition'}
+				{'Candidate'} Partition Subset Synchronization{'Recruiter', 'JobRequisition'}
+					Send Rejection Letter
+						 Related Types: {'Candidate'}
+						 Divergent Types: set()
+						 Convergent Types: set()
+						 Deficient Types: set()

@@ -11,7 +11,7 @@ def check_strict_sync(relations, ot1, ot2, violation_threshold):
 
     grouped = relations.groupby("ocel:eid")
 
-    oids = grouped["ocel:oid"].apply(frozenset)
+    oids = grouped["ocel:oid"].apply(list)
     types = grouped["ocel:type"].apply(list)
 
     event_sets = pandas.DataFrame({
@@ -88,7 +88,7 @@ def check_subset_sync( relations,ot1, ot2, strict_activities,  relaxed_activitie
 
     grouped = df.groupby("ocel:eid")
     event_sets = grouped.agg({
-        "ocel:oid": lambda x: frozenset(x),
+        "ocel:oid": lambda x: list(x),
         "ocel:type": lambda x: list(x),
         "ocel:activity": "first"
     })
